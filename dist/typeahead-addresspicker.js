@@ -46,12 +46,16 @@
         input: query,
         types: ["geocode"]
       }, function(predictions) {
-        var data, suggestion, _i, _len;
-        data = [];
-        for (_i = 0, _len = predictions.length; _i < _len; _i++) {
-          suggestion = predictions[_i];
-          data.push(suggestion);
-        }
+        var data, suggestion;
+        data = (function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = predictions.length; _i < _len; _i++) {
+            suggestion = predictions[_i];
+            _results.push(suggestion);
+          }
+          return _results;
+        })();
         return cb(data);
       });
     };

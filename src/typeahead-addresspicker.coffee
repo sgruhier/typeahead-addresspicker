@@ -28,9 +28,7 @@ class @AddressPicker extends Bloodhound
   get: (query, cb) ->
     service = new google.maps.places.AutocompleteService()
     service.getPlacePredictions { input: query ,  types: ["geocode"]}, (predictions) ->
-      data = []
-      for suggestion in predictions
-        data.push(suggestion)
+      data = (suggestion for suggestion in predictions)
       cb(data)
 
   #
