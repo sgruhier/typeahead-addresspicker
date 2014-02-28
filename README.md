@@ -1,5 +1,7 @@
-Quick example to show how to use twitter typeahead autocomplete and google map API to make a address picker.
+Demo available here: http://sgruhier.github.io/typeahead-addresspicker/
 
-This example is just a first try and could be updated to fully replace my previous address picker: http://xilinus.com/jquery-addresspicker/demos/
+Quick example to show how to use twitter typeahead autocomplete and google map API to make an address picker.
 
-Any suggestions (using issues) or pull requests are welcome
+This example is just a first try and could be enhanced to fully replace my previous address picker: http://xilinus.com/jquery-addresspicker/demos/
+
+Any suggestions (using issues) or pull requests are welcome.
