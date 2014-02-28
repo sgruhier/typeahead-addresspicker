@@ -13,7 +13,7 @@ class @AddressPicker extends Bloodhound
   # Init google map to display selected address from autocomplete
   initMap: (options)->
     # Create a PlacesService on a fake DOM element
-    @placeService    = new google.maps.places.PlacesService(document.createElement('div'))
+    @placeService = new google.maps.places.PlacesService(document.createElement('div'))
 
     options = $.extend
       zoom: 3

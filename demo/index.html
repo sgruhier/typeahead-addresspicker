@@ -14,11 +14,19 @@
     <div id="main">
       <h1> Typeahead address picker</h1>
       <p>
-        This is a full rewrite of the <a href="http://xilinus.com/jquery-addresspicker/demos/">jquery address picker</a>,
-        using <a href="http://twitter.github.io/typeahead.js/">typeahead autocomplete</a> from twitter and new google map API (PlacesService and AutocompleteService)
+        This is a quick full rewrite of my <a href="http://xilinus.com/jquery-addresspicker/demos/">jquery address picker plugin</a>,
+        using <a href="http://twitter.github.io/typeahead.js/">typeahead autocomplete</a> from twitter and new google maps API: PlacesService and AutocompleteService
       </p>
       <input id="address" class="typeahead" type="text" placeholder="Enter an address">
       <div id="map"></div>
+      <div style="clear:both"></div>
+      <h2>Explanations</h2>
+      <p>
+      The latest version of typeahead uses a class <code>Bloodhound</code> as source of autocomplete data. I just create my own class, derivated from <code>Bloodhound</code>
+      The code is pretty straight forward
+      <script type="text/javascript" src="https://gist.github.com/sgruhier/9273580.js"></script>
+      </p>
+
     </div>
   </div>
 
@@ -29,7 +37,7 @@
  <script src="../dist/typeahead-addresspicker.js"></script>
  <script>
   $( function() {
-    // instantiate the bloodhound suggestion engine
+    // instantiate the addressPicker suggestion engine (based on bloodhound)
     var addressPicker = new AddressPicker({map: {id: '#map'}});
 
     // instantiate the typeahead UI
@@ -42,8 +50,10 @@
       },
       source: addressPicker.ttAdapter()
     });
-    $('#address').bind("typeahead:selected", addressPicker.updateMap)
-    $('#address').bind("typeahead:cursorchanged", addressPicker.updateMap)
+
+    // Bind some event to update map on autocomplete selection
+    $('#address').bind("typeahead:selected", addressPicker.updateMap);
+    $('#address').bind("typeahead:cursorchanged", addressPicker.updateMap);
   })
   </script>
 
