@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>typeahead-addresspicker.js</title>
+  <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="main">
+      <h1> Typeahead address picker</h1>
+      <p>
+        This is a full rewrite of the <a href="http://xilinus.com/jquery-addresspicker/demos/">jquery address picker</a>,
+        using <a href="http://twitter.github.io/typeahead.js/">typeahead autocomplete</a> from twitter and new google map API (PlacesService and AutocompleteService)
+      </p>
+      <input id="address" class="typeahead" type="text" placeholder="Enter an address">
+      <div id="map"></div>
+    </div>
+  </div>
+
+ <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+ <script src="../dist/typeahead.js"></script>
+ <script src="../dist/handlebars.js"></script>
+ <script src="../dist/typeahead-addresspicker.js"></script>
+ <script>
+  $( function() {
+    // instantiate the bloodhound suggestion engine
+    var addressPicker = new AddressPicker({map: {id: '#map'}});
+
+    // instantiate the typeahead UI
+    $('#address').typeahead(null, {
+      displayKey: 'description',
+      templates: {
+        suggestion: Handlebars.compile(
+          '<p>{{description}}</p>'
+        )
+      },
+      source: addressPicker.ttAdapter()
+    });
+    $('#address').bind("typeahead:selected", addressPicker.updateMap)
+    $('#address').bind("typeahead:cursorchanged", addressPicker.updateMap)
+  })
+  </script>
+
+</body>
+</html>
