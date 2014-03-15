@@ -1,32 +1,43 @@
 {
-  "name"            : "typeahead-addresspicker",
-  "title"           : "typeahead-addresspicker",
-  "version"         : "1.0.0",
-  "homepage"        : "https://github.com/sgruhier/typeahead-addresspicker",
-  "author"          : {
-    "name"  : "Sebastien Gruhier",
-    "email" : "sebastien.gruhier@xilinus.com",
-    "url"   : "http://xilinus.com"
+  "name": "typeahead-addresspicker",
+  "title": "typeahead-addresspicker",
+  "version": "1.0.0",
+  "homepage": "https://github.com/sgruhier/typeahead-addresspicker",
+  "author": {
+    "name": "Sebastien Gruhier",
+    "email": "sebastien.gruhier@xilinus.com",
+    "url": "http://xilinus.com"
   },
-  "repository" : {
-    "type" : "git",
-    "url"  : "git://github.com/sgruhier/typeahead-addresspicker.git"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sgruhier/typeahead-addresspicker.git"
   },
-  "description" : "Example of adding google map API to typeahead jquery plugin to display address autocomplete suggestions.",
-  "keywords": ["jquery", "plugin", "typeahead", "addresspicker", "google", "map"],
-  "bugs" : {
-    "url" : "https://github.com/sgruhier/typeahead-addresspicker/issues"
+  "description": "Example of adding google map API to typeahead jquery plugin to display address autocomplete suggestions.",
+  "keywords": [
+    "jquery",
+    "plugin",
+    "typeahead",
+    "addresspicker",
+    "google",
+    "map"
+  ],
+  "bugs": {
+    "url": "https://github.com/sgruhier/typeahead-addresspicker/issues"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url" : "http://mit-license.org/"
-  }],
-  "devDependencies" : {
-    "grunt"                : "latest",
-    "grunt-cli"            : "latest",
-    "grunt-contrib-watch"  : "latest",
-    "grunt-contrib-coffee" : "latest",
-    "grunt-contrib-uglify" : "latest",
-    "grunt-growl"          : "latest"
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://mit-license.org/"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-cli": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-contrib-coffee": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-jasmine": "latest",
+    "grunt-growl": "latest",
+    "grunt-simple-mocha": "~0.4.0"
   }
 }

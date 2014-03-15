@@ -25,21 +25,48 @@ module.exports = (grunt) ->
           dest: "dist/"
           ext: ".js"
         ]
+      specs :
+        files: [
+          expand: true
+          cwd: 'spec/coffeescripts/'
+          src: '*.coffee'
+          dest: 'spec/javascripts/'
+          ext: '.js'
+        ]
+      helpers :
+        files: [
+          expand: true
+          cwd: 'spec/coffeescripts/helpers/'
+          src: '*.coffee'
+          dest: 'spec/javascripts/helpers/'
+          ext: '.js'
+        ]
 
     watch:
       files: [
         "src/*.coffee"
+        "spec/coffeescripts/**/*.coffee"
       ]
       tasks: [
         "coffee"
         "growl:coffee"
+        "jasmine"
+        "growl:jasmine"
       ]
 
     growl:
       coffee:
         title: "CoffeeScript"
         message: "Compiled successfully"
+      jasmine :
+        title   : 'Jasmine'
+        message : 'Tests passed successfully'
 
+    jasmine :
+      src     : ['dist/jquery.js', 'dist/typeahead.js', 'dist/typeahead-addresspicker.js', 'spec/javascripts/libs/*.js']
+      options :
+        specs   : 'spec/javascripts/**/*.js'
+        helpers : ['spec/javascripts/helpers/sinon-1.9.0.js', 'spec/javascripts/helpers/**/*.js]']
 
 
   # Lib tasks.
@@ -47,17 +74,20 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-contrib-uglify"
+  grunt.loadNpmTasks "grunt-contrib-jasmine"
 
   # Default and Build tasks
   mainTasks = [
     "coffee"
     "growl:coffee"
+    "jasmine"
+    "growl:jasmine"
   ]
   grunt.registerTask "default", mainTasks
   grunt.registerTask "build", mainTasks.concat(["uglify"])
 
   # Travis CI task.
   grunt.registerTask "travis", [
-    "coffee"
+    "coffee", "jasmine"
   ]
   return
