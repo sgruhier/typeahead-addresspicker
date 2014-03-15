@@ -67,6 +67,9 @@ module.exports = (grunt) ->
       options :
         specs   : 'spec/javascripts/**/*.js'
         helpers : ['spec/javascripts/helpers/sinon-1.9.0.js', 'spec/javascripts/helpers/**/*.js]']
+        '--web-security' : false
+        '--local-to-remote-url-access' : true
+        '--ignore-ssl-errors' : true
 
 
   # Lib tasks.

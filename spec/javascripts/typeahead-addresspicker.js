@@ -1,23 +1,5 @@
 (function() {
   describe('TypyaheadAddressPicker', function() {
-    var mockGoogleMap;
-    mockGoogleMap = function(response) {
-      window.google = {
-        maps: {
-          places: {}
-        }
-      };
-      return window.google.maps.places.AutocompleteService = (function() {
-        function AutocompleteService() {}
-
-        AutocompleteService.prototype.getPlacePredictions = function(options, callback) {
-          return callback(response);
-        };
-
-        return AutocompleteService;
-
-      })();
-    };
     describe('typeahead', function() {
       return it('should be available on the jQuery object', function() {
         return expect($.fn.typeahead).toBeDefined();
@@ -25,8 +7,8 @@
     });
     describe('AddressPicker', function() {
       beforeEach(function() {
-        mockGoogleMap();
-        this.GMA = window.google.maps.places.AutocompleteService;
+        this.fixture = getJSONFixture('paris-autocomplete-service.json');
+        mockGoogleMapAutocompleteService(this.fixture);
         return this.addressPicker = new AddressPicker();
       });
       it('should instance a new AddressPicker object', function() {
@@ -34,10 +16,9 @@
       });
       return it('should get autocomplete value', function() {
         var callback;
-        spyOn(this.GMA.prototype, 'getPlacePredictions');
-        this.addressPicker.get("Paris", function() {});
         callback = jasmine.createSpy();
-        return expect(this.GMA.prototype.getPlacePredictions).toHaveBeenCalled();
+        this.addressPicker.get("Paris", callback);
+        return expect(callback).toHaveBeenCalledWith(this.fixture);
       });
     });
     return describe('typeahead addresspicker', function() {
