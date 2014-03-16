@@ -32,8 +32,24 @@
       it('should not have a google map instance', function() {
         return expect(this.addressPicker.getGMap()).not.toBeDefined();
       });
-      return it('should not have a google marker instance', function() {
+      it('should not have a google marker instance', function() {
         return expect(this.addressPicker.getGMarker()).not.toBeDefined();
+      });
+      it('should have default autocompleteService options', function() {
+        return expect(this.addressPicker.options.autocompleteService).toEqual({
+          types: ["geocode"]
+        });
+      });
+      return it('should set autocompleteService options', function() {
+        var addressPicker;
+        addressPicker = new AddressPicker({
+          autocompleteService: {
+            types: ["cities"]
+          }
+        });
+        return expect(addressPicker.options.autocompleteService).toEqual({
+          types: ["cities"]
+        });
       });
     });
     return describe('AddressPicker with map options', function() {

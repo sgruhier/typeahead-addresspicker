@@ -1,14 +1,15 @@
 class @AddressPicker extends Bloodhound
   constructor: (options = {})->
-    options = $.extend
+    @options = $.extend
       local: []
       datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace(d.num)
       queryTokenizer: Bloodhound.tokenizers.whitespace
+      autocompleteService: {types: ["geocode"]}
     , options
-    super(options)
+    super(@options)
 
-    if options.map
-      @initMap(options.map)
+    if @options.map
+      @initMap(@options.map)
 
   # Binds typeahead:selected and typeahead:cursorchanged event to @updateMap
   bindDefaultTypeaheadEvent: (typeahead) ->
@@ -32,7 +33,8 @@ class @AddressPicker extends Bloodhound
   # Overrides Bloodhound#get  to send request to google maps autocomplete service
   get: (query, cb) ->
     service = new google.maps.places.AutocompleteService()
-    service.getPlacePredictions { input: query ,  types: ["geocode"]}, (predictions) ->
+    @options.autocompleteService.input = "query"
+    service.getPlacePredictions @options.autocompleteService, (predictions) ->
       data = (suggestion for suggestion in predictions)
       cb(data)
 

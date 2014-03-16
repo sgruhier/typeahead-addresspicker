@@ -11,16 +11,19 @@
         options = {};
       }
       this.updateMap = __bind(this.updateMap, this);
-      options = $.extend({
+      this.options = $.extend({
         local: [],
         datumTokenizer: function(d) {
           return Bloodhound.tokenizers.whitespace(d.num);
         },
-        queryTokenizer: Bloodhound.tokenizers.whitespace
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        autocompleteService: {
+          types: ["geocode"]
+        }
       }, options);
-      AddressPicker.__super__.constructor.call(this, options);
-      if (options.map) {
-        this.initMap(options.map);
+      AddressPicker.__super__.constructor.call(this, this.options);
+      if (this.options.map) {
+        this.initMap(this.options.map);
       }
     }
 
@@ -47,10 +50,8 @@
     AddressPicker.prototype.get = function(query, cb) {
       var service;
       service = new google.maps.places.AutocompleteService();
-      return service.getPlacePredictions({
-        input: query,
-        types: ["geocode"]
-      }, function(predictions) {
+      this.options.autocompleteService.input = "query";
+      return service.getPlacePredictions(this.options.autocompleteService, function(predictions) {
         var data, suggestion;
         data = (function() {
           var _i, _len, _results;

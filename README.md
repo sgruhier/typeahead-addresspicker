@@ -71,9 +71,16 @@ $('#address').bind("typeahead:cursorchanged", addressPicker.updateMap);
 ```
 
 
-# API
+# Options
 
-TODO
+When you instanciate a new ```AddressPicker``` you can pass a list of options ```new AddressPicker(options)```
+
+Available Options:
+
+* ```map``` (String/Element): map element if you want to link the autocomplete to a google map to display results (default: none).
+* ```autocompleteService``` (Hash) : options passed to google.maps.places.AutocompleteService#getPlacePredictions (default: ```{types: ["geocode"]}```)
+For more details read Google [documentation](https://developers.google.com/maps/documentation/javascript/reference#AutocompletionRequest). You can add a lot of options, like get only address for a country, or get only cities.
+
 
 # Tests
 

@@ -34,6 +34,13 @@ describe 'TypyaheadAddressPicker', ->
     it 'should not have a google marker instance', ->
       expect(@addressPicker.getGMarker()).not.toBeDefined()
 
+    it 'should have default autocompleteService options', ->
+      expect(@addressPicker.options.autocompleteService).toEqual(types: ["geocode"])
+
+    it 'should set autocompleteService options', ->
+      addressPicker = new AddressPicker(autocompleteService: {types: ["cities"]})
+      expect(addressPicker.options.autocompleteService).toEqual(types: ["cities"])
+
   describe 'AddressPicker with map options', ->
     beforeEach (done) ->
       @addressPicker = new AddressPicker(map: {id: '#map'})
