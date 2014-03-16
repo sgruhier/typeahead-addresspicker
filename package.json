@@ -39,5 +39,8 @@
     "grunt-contrib-jasmine": "latest",
     "grunt-growl": "latest",
     "grunt-simple-mocha": "~0.4.0"
+  },
+  "scripts": {
+    "test": "grunt travis"
   }
 }
