@@ -72,7 +72,7 @@ module.exports = (grunt) ->
       options :
         vendor: [
           'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
-          'https://maps.googleapis.com/maps/api/js?sensor=false'
+          'https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places'
         ]
         specs   : 'spec/javascripts/**/*.js'
         helpers : ['spec/javascripts/helpers/sinon-1.9.0.js', 'spec/javascripts/helpers/**/*.js]']

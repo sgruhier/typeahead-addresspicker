@@ -44,4 +44,8 @@ class @AddressPicker extends Bloodhound
         @map.setCenter(response.geometry.location)
         @map.setZoom(16)
 
+  # Attr accessor
+  getGMap: -> @map
+  getGMarker: -> @marker
+
 

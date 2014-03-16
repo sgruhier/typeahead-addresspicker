@@ -75,6 +75,14 @@
       })(this));
     };
 
+    AddressPicker.prototype.getGMap = function() {
+      return this.map;
+    };
+
+    AddressPicker.prototype.getGMarker = function() {
+      return this.marker;
+    };
+
     return AddressPicker;
 
   })(Bloodhound);
