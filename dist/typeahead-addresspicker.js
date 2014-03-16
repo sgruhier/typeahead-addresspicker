@@ -33,24 +33,24 @@
     };
 
     AddressPicker.prototype.initMap = function(options) {
-      this.placeService = new google.maps.places.PlacesService(document.createElement('div'));
       options = $.extend({
         zoom: 3,
         center: new google.maps.LatLng(0, 0),
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }, options);
       this.map = new google.maps.Map($(options.id)[0], options);
-      return this.marker = new google.maps.Marker({
+      this.marker = new google.maps.Marker({
         position: options.center,
         map: this.map,
         visible: false
       });
+      return this.placeService = new google.maps.places.PlacesService(this.map);
     };
 
     AddressPicker.prototype.get = function(query, cb) {
       var service;
       service = new google.maps.places.AutocompleteService();
-      this.options.autocompleteService.input = "query";
+      this.options.autocompleteService.input = query;
       return service.getPlacePredictions(this.options.autocompleteService, function(predictions) {
         var data, suggestion;
         data = (function() {

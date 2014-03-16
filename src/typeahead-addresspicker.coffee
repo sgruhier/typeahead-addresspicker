@@ -18,22 +18,23 @@ class @AddressPicker extends Bloodhound
 
   # Inits google map to display selected address from autocomplete
   initMap: (options)->
-    # Create a PlacesService on a fake DOM element
-    @placeService = new google.maps.places.PlacesService(document.createElement('div'))
-
     options = $.extend
       zoom: 3
       center: new google.maps.LatLng(0, 0)
       mapTypeId: google.maps.MapTypeId.ROADMAP
     , options
     @map = new google.maps.Map($(options.id)[0], options)
+
+    # Create a hidden marker to display selected address
     @marker = new google.maps.Marker(position: options.center, map: @map, visible: false)
 
+    # Create a PlacesService on a fake DOM element
+    @placeService = new google.maps.places.PlacesService(@map)
 
   # Overrides Bloodhound#get  to send request to google maps autocomplete service
   get: (query, cb) ->
     service = new google.maps.places.AutocompleteService()
-    @options.autocompleteService.input = "query"
+    @options.autocompleteService.input = query
     service.getPlacePredictions @options.autocompleteService, (predictions) ->
       data = (suggestion for suggestion in predictions)
       cb(data)
