@@ -5,7 +5,17 @@
         return expect($.fn.typeahead).toBeDefined();
       });
     });
-    describe('AddressPicker', function() {
+    describe('typeahead addresspicker', function() {
+      beforeEach(function() {
+        loadFixtures('fragment.html');
+        this.addressPicker = $('#fixtures').typeahead();
+        return console.log(window.google.maps.LatLng);
+      });
+      return it('should instanciate a typeahead', function() {
+        return expect($.fn.typeahead).toBeDefined();
+      });
+    });
+    describe('AddressPicker without map options', function() {
       beforeEach(function() {
         this.fixture = getJSONFixture('paris-autocomplete-service.json');
         mockGoogleMapAutocompleteService(this.fixture);
@@ -21,13 +31,9 @@
         return expect(callback).toHaveBeenCalledWith(this.fixture);
       });
     });
-    return describe('typeahead addresspicker', function() {
-      beforeEach(function() {
-        loadFixtures('fragment.html');
-        return this.addressPicker = $('#fixtures').typeahead();
-      });
-      return it('should instanciate a typeahead', function() {
-        return expect($.fn.typeahead).toBeDefined();
+    return describe('AddressPicker with map options', function() {
+      return it('should instance a new AddressPicker object', function() {
+        return expect(this.addressPicker instanceof AddressPicker).toBe(true);
       });
     });
   });

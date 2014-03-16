@@ -4,7 +4,16 @@ describe 'TypyaheadAddressPicker', ->
     it 'should be available on the jQuery object', ->
       expect($.fn.typeahead).toBeDefined()
 
-  describe 'AddressPicker', ->
+  # Verify that twitter typeahead is defined
+  describe 'typeahead addresspicker', ->
+    beforeEach ->
+      loadFixtures 'fragment.html'
+      @addressPicker = $('#fixtures').typeahead()
+
+    it 'should instanciate a typeahead', ->
+      expect($.fn.typeahead).toBeDefined()
+
+  describe 'AddressPicker without map options', ->
     beforeEach ->
       @fixture = getJSONFixture('paris-autocomplete-service.json')
       mockGoogleMapAutocompleteService(@fixture)
@@ -19,11 +28,7 @@ describe 'TypyaheadAddressPicker', ->
       @addressPicker.get("Paris", callback)
       expect(callback).toHaveBeenCalledWith(@fixture)
 
-  describe 'typeahead addresspicker', ->
-    beforeEach ->
-      loadFixtures 'fragment.html'
-      @addressPicker = $('#fixtures').typeahead()
-
-    it 'should instanciate a typeahead', ->
-      expect($.fn.typeahead).toBeDefined()
+  describe 'AddressPicker with map options', ->
+    it 'should instance a new AddressPicker object', ->
+      expect(@addressPicker instanceof AddressPicker).toBe(true)
 

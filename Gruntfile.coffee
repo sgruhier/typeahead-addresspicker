@@ -63,8 +63,17 @@ module.exports = (grunt) ->
         message : 'Tests passed successfully'
 
     jasmine :
-      src     : ['dist/jquery.js', 'dist/typeahead.js', 'dist/typeahead-addresspicker.js', 'spec/javascripts/libs/*.js']
+      src : [
+        'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
+        'dist/typeahead.js'
+        'dist/typeahead-addresspicker.js'
+        'spec/javascripts/libs/*.js'
+      ]
       options :
+        vendor: [
+          'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
+          'https://maps.googleapis.com/maps/api/js?sensor=false'
+        ]
         specs   : 'spec/javascripts/**/*.js'
         helpers : ['spec/javascripts/helpers/sinon-1.9.0.js', 'spec/javascripts/helpers/**/*.js]']
         '--web-security' : false
