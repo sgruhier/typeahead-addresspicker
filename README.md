@@ -6,7 +6,7 @@ The ```AddressPicker`` is a subclass of a [Bloodhound](https://github.com/twitte
 
 But it's much more than a simple suggestion engine because it can be linked to a google map to display/edit location.
 
-<img src="http://xilinus.com/jquery-addresspicker/demos/images/screenshot.png"/>
+<img src="https://raw.github.com/sgruhier/typeahead-addresspicker/master/screenshot.png"/>
 
 # How to use
 
@@ -99,4 +99,4 @@ Any suggestions (using issues) or pull requests are welcome.
 
 # Credits
 
-@copyright Sébastien Gruhier / Xilinus (http://xilinus.com - http://v3.maptimize.com - http://buy.maptmize.com)))
+@copyright Sébastien Gruhier / Xilinus (http://xilinus.com - http://v3.maptimize.com - http://buy.maptmize.com)
