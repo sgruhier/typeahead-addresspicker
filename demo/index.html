@@ -36,18 +36,15 @@
  <script src="../dist/typeahead-addresspicker.js"></script>
  <script>
   $( function() {
-// instantiate the addressPicker suggestion engine (based on bloodhound)
-var addressPicker = new AddressPicker({map: {id: '#map'}});
+    // instantiate the addressPicker suggestion engine (based on bloodhound)
+    var addressPicker = new AddressPicker({map: {id: '#map'}});
 
-// instantiate the typeahead UI
-$('#address').typeahead(null, {
-  displayKey: 'description',
-  source: addressPicker.ttAdapter()
-});
-
-// Bind some event to update map on autocomplete selection
-$('#address').bind("typeahead:selected", addressPicker.updateMap);
-$('#address').bind("typeahead:cursorchanged", addressPicker.updateMap);
+    // instantiate the typeahead UI
+    $('#address').typeahead(null, {
+      displayKey: 'description',
+      source: addressPicker.ttAdapter()
+    });
+    addressPicker.bindDefaultTypeaheadEvent($('#address'))
   })
   </script>
 

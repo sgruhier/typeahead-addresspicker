@@ -37,7 +37,7 @@ describe 'TypyaheadAddressPicker', ->
   describe 'AddressPicker with map options', ->
     beforeEach (done) ->
       @addressPicker = new AddressPicker(map: {id: '#map'})
-      $('#fixtures').typeahead
+      $('#typeahead').typeahead
         displayKey: 'description'
         source: @addressPicker.ttAdapter()
       google.maps.event.addListenerOnce(@addressPicker.getGMap(), 'idle', done)
@@ -51,6 +51,17 @@ describe 'TypyaheadAddressPicker', ->
     it 'should return google marker instance', ->
       expect(@addressPicker.getGMarker()).toBeDefined()
 
+    it 'should have google marker hidden by default', ->
+      expect(@addressPicker.getGMarker().getVisible()).toBe(false)
+
     it 'should create a google map ', (done) ->
       expect($('#map')).toContainElement('.gm-style')
       done()
+
+    it 'should bind default typeahead events', ->
+      spyOn(@addressPicker, 'updateMap')
+      @addressPicker.bindDefaultTypeaheadEvent($('#typeahead'))
+
+      $('#typeahead').trigger('typeahead:selected')
+      $('#typeahead').trigger('typeahead:cursorchanged')
+      expect(@addressPicker.updateMap.calls.count()).toEqual(2)

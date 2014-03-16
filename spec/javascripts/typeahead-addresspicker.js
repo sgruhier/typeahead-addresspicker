@@ -43,7 +43,7 @@
             id: '#map'
           }
         });
-        $('#fixtures').typeahead({
+        $('#typeahead').typeahead({
           displayKey: 'description',
           source: this.addressPicker.ttAdapter()
         });
@@ -58,9 +58,19 @@
       it('should return google marker instance', function() {
         return expect(this.addressPicker.getGMarker()).toBeDefined();
       });
-      return it('should create a google map ', function(done) {
+      it('should have google marker hidden by default', function() {
+        return expect(this.addressPicker.getGMarker().getVisible()).toBe(false);
+      });
+      it('should create a google map ', function(done) {
         expect($('#map')).toContainElement('.gm-style');
         return done();
+      });
+      return it('should bind default typeahead events', function() {
+        spyOn(this.addressPicker, 'updateMap');
+        this.addressPicker.bindDefaultTypeaheadEvent($('#typeahead'));
+        $('#typeahead').trigger('typeahead:selected');
+        $('#typeahead').trigger('typeahead:cursorchanged');
+        return expect(this.addressPicker.updateMap.calls.count()).toEqual(2);
       });
     });
   });

@@ -24,6 +24,11 @@
       }
     }
 
+    AddressPicker.prototype.bindDefaultTypeaheadEvent = function(typeahead) {
+      typeahead.bind("typeahead:selected", this.updateMap);
+      return typeahead.bind("typeahead:cursorchanged", this.updateMap);
+    };
+
     AddressPicker.prototype.initMap = function(options) {
       this.placeService = new google.maps.places.PlacesService(document.createElement('div'));
       options = $.extend({

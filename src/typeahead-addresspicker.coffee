@@ -10,7 +10,12 @@ class @AddressPicker extends Bloodhound
     if options.map
       @initMap(options.map)
 
-  # Init google map to display selected address from autocomplete
+  # Binds typeahead:selected and typeahead:cursorchanged event to @updateMap
+  bindDefaultTypeaheadEvent: (typeahead) ->
+    typeahead.bind("typeahead:selected", @updateMap)
+    typeahead.bind("typeahead:cursorchanged", @updateMap)
+
+  # Inits google map to display selected address from autocomplete
   initMap: (options)->
     # Create a PlacesService on a fake DOM element
     @placeService = new google.maps.places.PlacesService(document.createElement('div'))
@@ -24,14 +29,15 @@ class @AddressPicker extends Bloodhound
     @marker = new google.maps.Marker(position: options.center, map: @map, visible: false)
 
 
-  # Overide Bloodhound#get  to send request to google maps autocomplete service
+  # Overrides Bloodhound#get  to send request to google maps autocomplete service
   get: (query, cb) ->
     service = new google.maps.places.AutocompleteService()
     service.getPlacePredictions { input: query ,  types: ["geocode"]}, (predictions) ->
       data = (suggestion for suggestion in predictions)
       cb(data)
 
-  #
+  # Callback for typeahead events like typeahead:selected or typeahead:cursorchanged
+  # to update marker position and map center/zoom for a specific Google Map place
   updateMap: (event, place) =>
     # Send place reference to place service to get geographic information
     @placeService.getDetails place, (response) =>
