@@ -6,6 +6,8 @@ class @AddressPicker extends Bloodhound
       queryTokenizer: Bloodhound.tokenizers.whitespace
       autocompleteService: {types: ["geocode"]}
       zoomForLocation: 16
+      draggable: true
+      reverseGeocoding: false
     , options
     super(@options)
 
@@ -23,11 +25,15 @@ class @AddressPicker extends Bloodhound
       zoom: 3
       center: new google.maps.LatLng(0, 0)
       mapTypeId: google.maps.MapTypeId.ROADMAP
+      displayMarker: false
     , options
     @map = new google.maps.Map($(options.id)[0], options)
+    @lastResult = null
 
     # Create a hidden marker to display selected address
-    @marker = new google.maps.Marker(position: options.center, map: @map, visible: false)
+    @marker = new google.maps.Marker(position: options.center, map: @map, visible: options.displayMarker, draggable: @options.draggable)
+    if @options.draggable
+      google.maps.event.addListener(@marker, 'dragend', @markerDragged)
 
     # Create a PlacesService on a fake DOM element
     @placeService = new google.maps.places.PlacesService(@map)
@@ -47,13 +53,30 @@ class @AddressPicker extends Bloodhound
     @placeService.getDetails place, (response) =>
       @marker.setPosition(response.geometry.location)
       @marker.setVisible(true)
-
-      $(this).trigger('addresspicker:selected', new AddressPickerResult(response))
+      @lastResult = new AddressPickerResult(response)
+      $(this).trigger('addresspicker:selected', @lastResult)
       if response.geometry.viewport
         @map.fitBounds(response.geometry.viewport)
       else
         @map.setCenter(response.geometry.location)
         @map.setZoom(@options.zoomForLocation)
+
+  markerDragged: () =>
+    if @options.reverseGeocoding
+      @reverseGeocode(@marker.getPosition())
+    else
+      if @lastResult
+        @lastResult.setLatLng(@marker.getPosition().lat(), @marker.getPosition().lng())
+      else
+        @lastResult = new AddressPickerResult(geometry: {location: @marker.getPosition()})
+      $(this).trigger('addresspicker:selected', @lastResult)
+
+  reverseGeocode: (position) ->
+    @geocoder ?= new google.maps.Geocoder()
+    @geocoder.geocode location: position, (results) =>
+      if results && results.length > 0
+        @lastResult = new AddressPickerResult(results[0])
+        $(this).trigger('addresspicker:selected', @lastResult)
 
   # Attr accessor
   getGMap: -> @map
@@ -61,6 +84,8 @@ class @AddressPicker extends Bloodhound
 
 class @AddressPickerResult
   constructor: (@placeResult) ->
+    @latitude = @placeResult.geometry.location.lat()
+    @longitude = @placeResult.geometry.location.lng()
 
   addressTypes: ->
     types = []
@@ -70,7 +95,7 @@ class @AddressPickerResult
     types
 
   addressComponents: ->
-    @placeResult.address_components
+    @placeResult.address_components || []
 
   address: ->
     @placeResult.formatted_address
@@ -81,10 +106,13 @@ class @AddressPickerResult
     null
 
   lat: ->
-    @placeResult.geometry.location.lat()
+    @latitude
 
   lng: ->
-    @placeResult.geometry.location.lng()
+    @longitude
+
+  setLatLng: (@latitude, @longitude) ->
+
 
   isAccurate: ->
     ! @placeResult.geometry.viewport

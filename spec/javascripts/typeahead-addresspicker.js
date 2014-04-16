@@ -89,7 +89,7 @@
         return expect(this.addressPicker.updateMap.calls.count()).toEqual(2);
       });
     });
-    return describe('AddressPickerResult', function() {
+    describe('AddressPickerResult', function() {
       beforeEach(function() {
         var fixture;
         fixture = getJSONFixture('paris-place-result.json');
@@ -129,11 +129,35 @@
       it('should not be accurate if geometry has a viewport', function() {
         return expect(this.addressPickerResult.isAccurate()).toBe(false);
       });
-      return it('should be accurate if geometry has no viewport', function() {
+      it('should be accurate if geometry has no viewport', function() {
         var addressPickerResult, fixture;
         fixture = getJSONFixture('accurate-place-result.json');
+        fixture.geometry.location = new google.maps.LatLng(fixture.geometry.location.k, fixture.geometry.location.A);
         addressPickerResult = new AddressPickerResult(fixture);
         return expect(addressPickerResult.isAccurate()).toBe(true);
+      });
+      return it('should chnage lat/lng', function() {
+        this.addressPickerResult.setLatLng(12, 13);
+        expect(this.addressPickerResult.lat()).toEqual(12);
+        return expect(this.addressPickerResult.lng()).toEqual(13);
+      });
+    });
+    return describe('AddressPickerResult with only lat/lng', function() {
+      beforeEach(function() {
+        return this.addressPickerResult = new AddressPickerResult({
+          geometry: {
+            location: new google.maps.LatLng(12, 13)
+          }
+        });
+      });
+      it('should get latitude value', function() {
+        return expect(this.addressPickerResult.lat()).toEqual(12);
+      });
+      it('should get longitude value', function() {
+        return expect(this.addressPickerResult.lng()).toEqual(13);
+      });
+      return it('should not have addressComponents', function() {
+        return expect(this.addressPickerResult.addressComponents().length).toEqual(0);
       });
     });
   });

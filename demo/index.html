@@ -42,7 +42,7 @@
  <script>
   $( function() {
     // instantiate the addressPicker suggestion engine (based on bloodhound)
-    var addressPicker = new AddressPicker({map: {id: '#map'}, zoomForLocation: 18, draggable: true, reverseGeocoding: false});
+    var addressPicker = new AddressPicker({map: {id: '#map', displayMarker: true}, zoomForLocation: 18, draggable: true, reverseGeocoding: true});
 
     // instantiate the typeahead UI
     $('#address').typeahead(null, {
@@ -51,7 +51,8 @@
     });
     addressPicker.bindDefaultTypeaheadEvent($('#address'))
     $(addressPicker).on('addresspicker:selected', function (event, result) {
-      html = ["Latitude: " + result.lat()]
+      html = ["Address: " + result.address()]
+      html.push("Latitude: " + result.lat())
       html.push("Longitude: " + result.lng())
       html.push("Long names:")
       result.addressTypes().forEach(function(type) {

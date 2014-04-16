@@ -164,7 +164,7 @@ h4 {
   width: 405px;
 }
 
-pre {
+pre#response {
   float:left;
   width: 430px;
   height: 400px;

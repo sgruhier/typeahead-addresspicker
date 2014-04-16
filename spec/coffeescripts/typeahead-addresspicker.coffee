@@ -114,7 +114,25 @@ describe 'TypyaheadAddressPicker', ->
 
     it 'should be accurate if geometry has no viewport', ->
       fixture = getJSONFixture('accurate-place-result.json')
+      fixture.geometry.location = new google.maps.LatLng(fixture.geometry.location.k, fixture.geometry.location.A)
       addressPickerResult = new AddressPickerResult(fixture)
       expect(addressPickerResult.isAccurate()).toBe(true)
 
+    it 'should chnage lat/lng', ->
+      @addressPickerResult.setLatLng(12, 13)
+      expect(@addressPickerResult.lat()).toEqual(12)
+      expect(@addressPickerResult.lng()).toEqual(13)
+
+  describe 'AddressPickerResult with only lat/lng', ->
+    beforeEach ->
+      @addressPickerResult = new AddressPickerResult(geometry: {location: new google.maps.LatLng(12,13)})
+
+    it 'should get latitude value', ->
+      expect(@addressPickerResult.lat()).toEqual(12)
+
+    it 'should get longitude value', ->
+      expect(@addressPickerResult.lng()).toEqual(13)
+
+    it 'should not have addressComponents', ->
+      expect(@addressPickerResult.addressComponents().length).toEqual(0)
 
