@@ -84,6 +84,29 @@ For more details read Google [documentation](https://developers.google.com/maps/
 * ```draggable``` (Boolean): Marker on the map is draggable to adjust location (default: true).
 * ```reverseGeocoding``` (Boolean): Reverse geocoding when marker is dragged on map (default: true).
 
+# Events
+
+Only one event is trigger by ```AddressPicker``` object: ```addresspicker:selected```.
+The event is fired when an address is selected or when the marker is dragged. If reverseGeocoding is activated, a full response is trigger, otherwise only lat/lng.
+
+To simplify google response parsing, we fire an object of type ```AddressPickerResult``` with some accessors:
+* ```lat()```
+* ```lng()```
+* ```addressTypes()```
+* ```addressComponents()```
+* ```nameForType: (type, shortName = false)```
+
+Listen that event to get values you need and store them in your form.
+Here is an example:
+
+```js
+$(addressPicker).on('addresspicker:selected', function (event, result) {
+  $('#your_lat_input').val(result.lat());
+  $('#your_lng_input').val(result.lng());
+  $('#your_city_input').val(result.nameForType('locality'));
+});
+
+``` 
 # Tests
 
 The code is tested as much as possible. If you want to add features, please add spec in your pull request.
