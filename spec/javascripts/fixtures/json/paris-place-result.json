@@ -1,0 +1,65 @@
+{
+  "address_components": [
+    {
+      "long_name": "Paris",
+      "short_name": "Paris",
+      "types": [
+        "locality",
+        "political"
+      ]
+    },
+    {
+      "long_name": "Paris",
+      "short_name": "75",
+      "types": [
+        "administrative_area_level_2",
+        "political"
+      ]
+    },
+    {
+      "long_name": "Île-de-France",
+      "short_name": "IDF",
+      "types": [
+        "administrative_area_level_1",
+        "political"
+      ]
+    },
+    {
+      "long_name": "France",
+      "short_name": "FR",
+      "types": [
+        "country",
+        "political"
+      ]
+    }
+  ],
+  "adr_address": "Paris, France",
+  "formatted_address": "Paris, France",
+  "geometry": {
+    "location": {
+      "k": 48.856614,
+      "A": 2.3522219000000177
+    },
+    "viewport": {
+      "Ba": {
+        "k": 48.815573,
+        "j": 48.9021449
+      },
+      "ra": {
+        "j": 2.2241989999999987,
+        "k": 2.4699207999999544
+      }
+    }
+  },
+  "icon": "http://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+  "id": "691b237b0322f28988f3ce03e321ff72a12167fd",
+  "name": "Paris",
+  "reference": "CnRwAAAAiltH9lFC69SYxyy9Jy81ab7J5oa7OKI6r7XLL652vD3Nh6iPN3dQtODWVrUBu0Z8i_q9MC1SDmNtdaSjMh7UzChRZjE27cXDirij22WTYFVof78zlzrdgAQCN-T6RM5tDxI5Mvsu2gjntiXtJIPkOxIQzgWWYq9BQEK94JZ32IsXZBoURMyh0K23p0wv2A8ZXBW1DeWm9ws",
+  "types": [
+    "locality",
+    "political"
+  ],
+  "url": "https://maps.google.com/maps/place?q=Paris,+France&ftid=0x47e66e1f06e2b70f:0x40b82c3688c9460",
+  "vicinity": "Paris",
+  "html_attributions": []
+}

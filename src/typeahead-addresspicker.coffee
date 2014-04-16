@@ -5,6 +5,7 @@ class @AddressPicker extends Bloodhound
       datumTokenizer: (d) -> Bloodhound.tokenizers.whitespace(d.num)
       queryTokenizer: Bloodhound.tokenizers.whitespace
       autocompleteService: {types: ["geocode"]}
+      zoomForLocation: 16
     , options
     super(@options)
 
@@ -47,14 +48,44 @@ class @AddressPicker extends Bloodhound
       @marker.setPosition(response.geometry.location)
       @marker.setVisible(true)
 
+      $(this).trigger('addresspicker:selected', new AddressPickerResult(response))
       if response.geometry.viewport
         @map.fitBounds(response.geometry.viewport)
       else
         @map.setCenter(response.geometry.location)
-        @map.setZoom(16)
+        @map.setZoom(@options.zoomForLocation)
 
   # Attr accessor
   getGMap: -> @map
   getGMarker: -> @marker
 
+class @AddressPickerResult
+  constructor: (@placeResult) ->
+
+  addressTypes: ->
+    types = []
+    for component in @addressComponents()
+      for type in component.types
+        types.push(type) if types.indexOf(type) == -1
+    types
+
+  addressComponents: ->
+    @placeResult.address_components
+
+  address: ->
+    @placeResult.formatted_address
+
+  nameForType: (type, shortName = false) ->
+    for component in @addressComponents()
+      return (if shortName then component.short_name else component.long_name) if component.types.indexOf(type) != -1
+    null
+
+  lat: ->
+    @placeResult.geometry.location.lat()
+
+  lng: ->
+    @placeResult.geometry.location.lng()
+
+  isAccurate: ->
+    ! @placeResult.geometry.viewport
 

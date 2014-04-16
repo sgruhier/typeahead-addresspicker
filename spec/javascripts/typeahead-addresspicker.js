@@ -52,14 +52,14 @@
         });
       });
     });
-    return describe('AddressPicker with map options', function() {
+    describe('AddressPicker with map options', function() {
       beforeEach(function(done) {
         this.addressPicker = new AddressPicker({
           map: {
             id: '#map'
           }
         });
-        $('#typeahead').typeahead({
+        $('#typeahead').typeahead(null, {
           displayKey: 'description',
           source: this.addressPicker.ttAdapter()
         });
@@ -87,6 +87,53 @@
         $('#typeahead').trigger('typeahead:selected');
         $('#typeahead').trigger('typeahead:cursorchanged');
         return expect(this.addressPicker.updateMap.calls.count()).toEqual(2);
+      });
+    });
+    return describe('AddressPickerResult', function() {
+      beforeEach(function() {
+        var fixture;
+        fixture = getJSONFixture('paris-place-result.json');
+        fixture.geometry.location = new google.maps.LatLng(fixture.geometry.location.k, fixture.geometry.location.A);
+        return this.addressPickerResult = new AddressPickerResult(fixture);
+      });
+      it('should instance a new AddressPickerResult object', function() {
+        return expect(this.addressPickerResult instanceof AddressPickerResult).toBe(true);
+      });
+      it('should get list of addressTypes', function() {
+        return expect(this.addressPickerResult.addressTypes()).toEqual(['locality', 'political', 'administrative_area_level_2', 'administrative_area_level_1', 'country']);
+      });
+      it('should get addressComponents', function() {
+        return expect(this.addressPickerResult.addressComponents().length).toEqual(4);
+      });
+      it('should get latitude value', function() {
+        return expect(this.addressPickerResult.lat()).toEqual(48.856614);
+      });
+      it('should get longitude value', function() {
+        return expect(this.addressPickerResult.lng()).toEqual(2.3522219000000177);
+      });
+      it('should get name for type if available', function() {
+        expect(this.addressPickerResult.nameForType("country")).toEqual('France');
+        expect(this.addressPickerResult.nameForType("administrative_area_level_1")).toEqual('Île-de-France');
+        expect(this.addressPickerResult.nameForType("administrative_area_level_2")).toEqual('Paris');
+        return expect(this.addressPickerResult.nameForType("locality")).toEqual('Paris');
+      });
+      it('should get null value for type if not available', function() {
+        return expect(this.addressPickerResult.nameForType("sublocality")).toBe(null);
+      });
+      it('should get short name for type if available', function() {
+        expect(this.addressPickerResult.nameForType("country", true)).toEqual('FR');
+        expect(this.addressPickerResult.nameForType("administrative_area_level_1", true)).toEqual('IDF');
+        expect(this.addressPickerResult.nameForType("administrative_area_level_2", true)).toEqual('75');
+        return expect(this.addressPickerResult.nameForType("locality", true)).toEqual('Paris');
+      });
+      it('should not be accurate if geometry has a viewport', function() {
+        return expect(this.addressPickerResult.isAccurate()).toBe(false);
+      });
+      return it('should be accurate if geometry has no viewport', function() {
+        var addressPickerResult, fixture;
+        fixture = getJSONFixture('accurate-place-result.json');
+        addressPickerResult = new AddressPickerResult(fixture);
+        return expect(addressPickerResult.isAccurate()).toBe(true);
       });
     });
   });

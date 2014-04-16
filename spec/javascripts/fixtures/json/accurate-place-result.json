@@ -1,0 +1,61 @@
+{
+  "address_components": [
+    {
+      "long_name": "Place Masséna",
+      "short_name": "Pl. Masséna",
+      "types": [
+        "route"
+      ]
+    },
+    {
+      "long_name": "Nice",
+      "short_name": "Nice",
+      "types": [
+        "locality",
+        "political"
+      ]
+    },
+    {
+      "long_name": "Alpes-Maritimes",
+      "short_name": "06",
+      "types": [
+        "administrative_area_level_2",
+        "political"
+      ]
+    },
+    {
+      "long_name": "Provence-Alpes-Côte d'Azur",
+      "short_name": "PACA",
+      "types": [
+        "administrative_area_level_1",
+        "political"
+      ]
+    },
+    {
+      "long_name": "France",
+      "short_name": "FR",
+      "types": [
+        "country",
+        "political"
+      ]
+    }
+  ],
+  "adr_address": "Place Masséna, Nice, France",
+  "formatted_address": "Place Masséna, Nice, France",
+  "geometry": {
+    "location": {
+      "k": 43.69647680000001,
+      "A": 7.270199400000024
+    }
+  },
+  "icon": "http://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+  "id": "da3185cc706c48862bea556193831ea6ed719f5d",
+  "name": "Place Masséna",
+  "reference": "CoQBfwAAAPIGw_19fTT20H3T0le6a9N-Arwfsmk1IgZFay4a7cxwW0Gaskdxsq3xkzGCFvYm960CI96PsplHw2f_x7kfMA999Z0swEcD0LKwOgKKdZydtjwCWq7FZxTqYVzT40J2n2-Jr2RKDMmcv6t6z0qlW2PH8vgBPS07gYH2JUOm_NgwEhC5WW4VgYB-jbfl_KmeIqmMGhT4TW0J2BN6_BckBnB_wnRsV5rTUg",
+  "types": [
+    "route"
+  ],
+  "url": "https://maps.google.com/maps/place?q=Place+Mass%C3%A9na,+Nice,+France&ftid=0x12cddaa161703019:0x4069c261780c67c",
+  "vicinity": "Nice",
+  "html_attributions": []
+}

@@ -44,7 +44,7 @@ describe 'TypyaheadAddressPicker', ->
   describe 'AddressPicker with map options', ->
     beforeEach (done) ->
       @addressPicker = new AddressPicker(map: {id: '#map'})
-      $('#typeahead').typeahead
+      $('#typeahead').typeahead null,
         displayKey: 'description'
         source: @addressPicker.ttAdapter()
       google.maps.event.addListenerOnce(@addressPicker.getGMap(), 'idle', done)
@@ -72,3 +72,49 @@ describe 'TypyaheadAddressPicker', ->
       $('#typeahead').trigger('typeahead:selected')
       $('#typeahead').trigger('typeahead:cursorchanged')
       expect(@addressPicker.updateMap.calls.count()).toEqual(2)
+
+  describe 'AddressPickerResult', ->
+    beforeEach ->
+      fixture = getJSONFixture('paris-place-result.json')
+      fixture.geometry.location = new google.maps.LatLng(fixture.geometry.location.k, fixture.geometry.location.A)
+      @addressPickerResult = new AddressPickerResult(fixture)
+
+    it 'should instance a new AddressPickerResult object', ->
+      expect(@addressPickerResult instanceof AddressPickerResult).toBe(true)
+
+    it 'should get list of addressTypes', ->
+      expect(@addressPickerResult.addressTypes()).toEqual(['locality', 'political', 'administrative_area_level_2', 'administrative_area_level_1', 'country'])
+
+    it 'should get addressComponents', ->
+      expect(@addressPickerResult.addressComponents().length).toEqual(4)
+
+    it 'should get latitude value', ->
+      expect(@addressPickerResult.lat()).toEqual(48.856614)
+
+    it 'should get longitude value', ->
+      expect(@addressPickerResult.lng()).toEqual(2.3522219000000177)
+
+    it 'should get name for type if available', ->
+      expect(@addressPickerResult.nameForType("country")).toEqual('France')
+      expect(@addressPickerResult.nameForType("administrative_area_level_1")).toEqual('Île-de-France')
+      expect(@addressPickerResult.nameForType("administrative_area_level_2")).toEqual('Paris')
+      expect(@addressPickerResult.nameForType("locality")).toEqual('Paris')
+
+    it 'should get null value for type if not available', ->
+      expect(@addressPickerResult.nameForType("sublocality")).toBe(null)
+
+    it 'should get short name for type if available', ->
+      expect(@addressPickerResult.nameForType("country", true)).toEqual('FR')
+      expect(@addressPickerResult.nameForType("administrative_area_level_1", true)).toEqual('IDF')
+      expect(@addressPickerResult.nameForType("administrative_area_level_2", true)).toEqual('75')
+      expect(@addressPickerResult.nameForType("locality", true)).toEqual('Paris')
+
+    it 'should not be accurate if geometry has a viewport', ->
+      expect(@addressPickerResult.isAccurate()).toBe(false)
+
+    it 'should be accurate if geometry has no viewport', ->
+      fixture = getJSONFixture('accurate-place-result.json')
+      addressPickerResult = new AddressPickerResult(fixture)
+      expect(addressPickerResult.isAccurate()).toBe(true)
+
+

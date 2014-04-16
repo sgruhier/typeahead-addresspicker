@@ -79,21 +79,21 @@ module.exports = (grunt) ->
         '--web-security' : false
         '--local-to-remote-url-access' : true
         '--ignore-ssl-errors' : true
-      # coverage:
-      #   src: ["dist/typeahead.js", "dist/typeahead-addresspicker.js"]
-      #   options:
-      #     specs: 'spec/javascripts/**/*.js'
-      #     template: require('grunt-template-jasmine-istanbul')
-      #     templateOptions:
-      #       coverage: 'coverage/coverage.json'
-      #       report: [
-      #         {
-      #           type: 'html',
-      #           options: {
-      #             dir: 'coverage/html'
-      #           }
-      #         }
-      #       ]
+      coverage:
+        src: ["dist/typeahead.js", "dist/typeahead-addresspicker.js"]
+        options:
+          specs: 'spec/javascripts/**/*.js'
+          template: require('grunt-template-jasmine-istanbul')
+          templateOptions:
+            coverage: 'coverage/coverage.json'
+            report: [
+              {
+                type: 'html',
+                options: {
+                  dir: 'coverage/html'
+                }
+              }
+            ]
 
 
   # Lib tasks.

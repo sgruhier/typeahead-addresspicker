@@ -17,7 +17,12 @@
         This is a quick full rewrite of my <a href="http://xilinus.com/jquery-addresspicker/demos/">jquery address picker plugin</a>,
         using <a href="http://twitter.github.io/typeahead.js/">typeahead autocomplete</a> from twitter and new google maps API: PlacesService and AutocompleteService
       </p>
-      <input id="address" class="typeahead" type="text" placeholder="Enter an address">
+      <div id="address-panel">
+        <input id="address" class="typeahead" type="text" placeholder="Enter an address">
+          <h4>Response</h4>
+          <pre id="response">
+          </pre>
+      </div>
       <div id="map"></div>
       <div style="clear:both"></div>
       <h2>Explanations</h2>
@@ -37,7 +42,7 @@
  <script>
   $( function() {
     // instantiate the addressPicker suggestion engine (based on bloodhound)
-    var addressPicker = new AddressPicker({map: {id: '#map'}});
+    var addressPicker = new AddressPicker({map: {id: '#map'}, zoomForLocation: 18, draggable: true, reverseGeocoding: false});
 
     // instantiate the typeahead UI
     $('#address').typeahead(null, {
@@ -45,6 +50,20 @@
       source: addressPicker.ttAdapter()
     });
     addressPicker.bindDefaultTypeaheadEvent($('#address'))
+    $(addressPicker).on('addresspicker:selected', function (event, result) {
+      html = ["Latitude: " + result.lat()]
+      html.push("Longitude: " + result.lng())
+      html.push("Long names:")
+      result.addressTypes().forEach(function(type) {
+        html.push("  " + type + ": " + result.nameForType(type))
+      })
+      html.push("Short names:")
+      result.addressTypes().forEach(function(type) {
+        html.push("  " + type + ": " + result.nameForType(type, true))
+      })
+      console.log(result.placeResult)
+      $('#response').html( html.join('\n'))
+    })
   })
   </script>
 

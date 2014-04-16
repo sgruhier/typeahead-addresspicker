@@ -19,7 +19,8 @@
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         autocompleteService: {
           types: ["geocode"]
-        }
+        },
+        zoomForLocation: 16
       }, options);
       AddressPicker.__super__.constructor.call(this, this.options);
       if (this.options.map) {
@@ -71,11 +72,12 @@
         return function(response) {
           _this.marker.setPosition(response.geometry.location);
           _this.marker.setVisible(true);
+          $(_this).trigger('addresspicker:selected', new AddressPickerResult(response));
           if (response.geometry.viewport) {
             return _this.map.fitBounds(response.geometry.viewport);
           } else {
             _this.map.setCenter(response.geometry.location);
-            return _this.map.setZoom(16);
+            return _this.map.setZoom(_this.options.zoomForLocation);
           }
         };
       })(this));
@@ -92,5 +94,66 @@
     return AddressPicker;
 
   })(Bloodhound);
+
+  this.AddressPickerResult = (function() {
+    function AddressPickerResult(placeResult) {
+      this.placeResult = placeResult;
+    }
+
+    AddressPickerResult.prototype.addressTypes = function() {
+      var component, type, types, _i, _j, _len, _len1, _ref, _ref1;
+      types = [];
+      _ref = this.addressComponents();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        component = _ref[_i];
+        _ref1 = component.types;
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          type = _ref1[_j];
+          if (types.indexOf(type) === -1) {
+            types.push(type);
+          }
+        }
+      }
+      return types;
+    };
+
+    AddressPickerResult.prototype.addressComponents = function() {
+      return this.placeResult.address_components;
+    };
+
+    AddressPickerResult.prototype.address = function() {
+      return this.placeResult.formatted_address;
+    };
+
+    AddressPickerResult.prototype.nameForType = function(type, shortName) {
+      var component, _i, _len, _ref;
+      if (shortName == null) {
+        shortName = false;
+      }
+      _ref = this.addressComponents();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        component = _ref[_i];
+        if (component.types.indexOf(type) !== -1) {
+          return (shortName ? component.short_name : component.long_name);
+        }
+      }
+      return null;
+    };
+
+    AddressPickerResult.prototype.lat = function() {
+      return this.placeResult.geometry.location.lat();
+    };
+
+    AddressPickerResult.prototype.lng = function() {
+      return this.placeResult.geometry.location.lng();
+    };
+
+    AddressPickerResult.prototype.isAccurate = function() {
+      return !this.placeResult.geometry.viewport;
+    };
+
+    return AddressPickerResult;
+
+  })();
 
 }).call(this);
