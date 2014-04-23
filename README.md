@@ -126,8 +126,6 @@ Any suggestions (using issues) or pull requests are welcome.
 # Todo
 
 * Coonect HTML5 geolocalisation API to display user position
-* Add reverse geo-coding
-* Add more options for AutocompleteService
 * Anything else that could make sense to be added :). You can open an issue with a label "feature" to open a discussion on a feature/API you'd like to add.
 
 # Credits
