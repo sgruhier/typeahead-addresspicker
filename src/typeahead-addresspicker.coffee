@@ -52,6 +52,9 @@ class @AddressPicker extends Bloodhound
     if @options.map
       @initMap(@options.map)
 
+    # Create a PlacesService on a fake DOM element
+    @placeService = new google.maps.places.PlacesService(document.createElement('div'))
+
   # Binds typeahead:selected and typeahead:cursorchanged event to @updateMap
   bindDefaultTypeaheadEvent: (typeahead) ->
     typeahead.bind("typeahead:selected", @updateMap)
@@ -73,9 +76,6 @@ class @AddressPicker extends Bloodhound
     if @options.draggable
       google.maps.event.addListener(@marker, 'dragend', @markerDragged)
 
-    # Create a PlacesService on a fake DOM element
-    @placeService = new google.maps.places.PlacesService(@map)
-
   # Overrides Bloodhound#get  to send request to google maps autocomplete service
   get: (query, cb) ->
     service = new google.maps.places.AutocompleteService()
@@ -89,15 +89,17 @@ class @AddressPicker extends Bloodhound
   updateMap: (event, place) =>
     # Send place reference to place service to get geographic information
     @placeService.getDetails place, (response) =>
-      @marker.setPosition(response.geometry.location)
-      @marker.setVisible(true)
       @lastResult = new AddressPickerResult(response)
       $(this).trigger('addresspicker:selected', @lastResult)
-      if response.geometry.viewport
-        @map.fitBounds(response.geometry.viewport)
-      else
-        @map.setCenter(response.geometry.location)
-        @map.setZoom(@options.zoomForLocation)
+      if @marker
+        @marker.setPosition(response.geometry.location)
+        @marker.setVisible(true)
+      if @map
+        if response.geometry.viewport
+          @map.fitBounds(response.geometry.viewport)
+        else
+          @map.setCenter(response.geometry.location)
+          @map.setZoom(@options.zoomForLocation)
 
   markerDragged: () =>
     if @options.reverseGeocoding

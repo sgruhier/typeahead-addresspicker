@@ -149,22 +149,22 @@ h4 {
   width: 1000px;
   margin: 10px auto;
 }
-#map, #map2 {
+#map {
   float:right;
   width: 490px;
   height: 500px;
   border: 1px solid #DDD;
 }
-#address-panel {
+.address-panel {
   float:left;
   width: 430px;
 
 }
-#address {
+.typeahead {
   width: 405px;
 }
 
-pre#response {
+pre.response {
   float:left;
   width: 430px;
   height: 400px;

@@ -102,6 +102,7 @@
       if (this.options.map) {
         this.initMap(this.options.map);
       }
+      this.placeService = new google.maps.places.PlacesService(document.createElement('div'));
     }
 
     AddressPicker.prototype.bindDefaultTypeaheadEvent = function(typeahead) {
@@ -125,9 +126,8 @@
         draggable: this.options.draggable
       });
       if (this.options.draggable) {
-        google.maps.event.addListener(this.marker, 'dragend', this.markerDragged);
+        return google.maps.event.addListener(this.marker, 'dragend', this.markerDragged);
       }
-      return this.placeService = new google.maps.places.PlacesService(this.map);
     };
 
     AddressPicker.prototype.get = function(query, cb) {
@@ -152,15 +152,19 @@
     AddressPicker.prototype.updateMap = function(event, place) {
       return this.placeService.getDetails(place, (function(_this) {
         return function(response) {
-          _this.marker.setPosition(response.geometry.location);
-          _this.marker.setVisible(true);
           _this.lastResult = new AddressPickerResult(response);
           $(_this).trigger('addresspicker:selected', _this.lastResult);
-          if (response.geometry.viewport) {
-            return _this.map.fitBounds(response.geometry.viewport);
-          } else {
-            _this.map.setCenter(response.geometry.location);
-            return _this.map.setZoom(_this.options.zoomForLocation);
+          if (_this.marker) {
+            _this.marker.setPosition(response.geometry.location);
+            _this.marker.setVisible(true);
+          }
+          if (_this.map) {
+            if (response.geometry.viewport) {
+              return _this.map.fitBounds(response.geometry.viewport);
+            } else {
+              _this.map.setCenter(response.geometry.location);
+              return _this.map.setZoom(_this.options.zoomForLocation);
+            }
           }
         };
       })(this));

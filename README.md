@@ -80,7 +80,8 @@ Available Options:
 * ```map``` (String/Element): map element if you want to link the autocomplete to a google map to display results (default: none).
 * ```autocompleteService``` (Hash) : options passed to google.maps.places.AutocompleteService#getPlacePredictions (default: ```{types: ["geocode"]}```)
 For more details read Google [documentation](https://developers.google.com/maps/documentation/javascript/reference#AutocompletionRequest). You can add a lot of options, like get only address for a country, or get only cities.
-Example for only cities in USA: ```autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}```
+
+Example To get only cities in United States: ```autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}```
 * ```zoomForLocation``` (Numner): Zoom value when an accurate address is selected (default: 16).
 * ```draggable``` (Boolean): Marker on the map is draggable to adjust location (default: true).
 * ```reverseGeocoding``` (Boolean): Reverse geocoding when marker is dragged on map (default: true).
