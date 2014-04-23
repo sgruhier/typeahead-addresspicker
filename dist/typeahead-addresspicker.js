@@ -95,12 +95,11 @@
           types: ["geocode"]
         },
         zoomForLocation: 16,
-        draggable: true,
         reverseGeocoding: false
       }, options);
       AddressPicker.__super__.constructor.call(this, this.options);
       if (this.options.map) {
-        this.initMap(this.options.map);
+        this.initMap();
       }
       this.placeService = new google.maps.places.PlacesService(document.createElement('div'));
     }
@@ -110,21 +109,22 @@
       return typeahead.bind("typeahead:cursorchanged", this.updateMap);
     };
 
-    AddressPicker.prototype.initMap = function(options) {
-      options = $.extend({
+    AddressPicker.prototype.initMap = function() {
+      var mapOptions, markerOptions;
+      mapOptions = $.extend({
         zoom: 3,
         center: new google.maps.LatLng(0, 0),
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        displayMarker: false
-      }, options);
-      this.map = new google.maps.Map($(options.id)[0], options);
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }, this.options.map);
+      this.map = new google.maps.Map($(mapOptions.id)[0], mapOptions);
       this.lastResult = null;
-      this.marker = new google.maps.Marker({
-        position: options.center,
-        map: this.map,
-        visible: options.displayMarker,
-        draggable: this.options.draggable
-      });
+      markerOptions = $.extend({
+        draggable: true,
+        visible: false,
+        position: mapOptions.center,
+        map: this.map
+      }, this.options.marker || {});
+      this.marker = new google.maps.Marker(markerOptions);
       if (this.options.draggable) {
         return google.maps.event.addListener(this.marker, 'dragend', this.markerDragged);
       }

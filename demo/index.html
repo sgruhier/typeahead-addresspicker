@@ -77,7 +77,7 @@
 
   $( function() {
     // instantiate the addressPicker suggestion engine (based on bloodhound)
-    var addressPicker = new AddressPicker({map: {id: '#map', displayMarker: true}, zoomForLocation: 18, draggable: true, reverseGeocoding: true});
+    var addressPicker = new AddressPicker({map: {id: '#map'}, marker: {draggable: true, visible: true}, zoomForLocation: 18, reverseGeocoding: true});
 
     // instantiate the typeahead UI
     $('#address2').typeahead(null, {

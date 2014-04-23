@@ -44,13 +44,12 @@ class @AddressPicker extends Bloodhound
       queryTokenizer: Bloodhound.tokenizers.whitespace
       autocompleteService: {types: ["geocode"]}
       zoomForLocation: 16
-      draggable: true
       reverseGeocoding: false
     , options
     super(@options)
 
     if @options.map
-      @initMap(@options.map)
+      @initMap()
 
     # Create a PlacesService on a fake DOM element
     @placeService = new google.maps.places.PlacesService(document.createElement('div'))
@@ -61,18 +60,23 @@ class @AddressPicker extends Bloodhound
     typeahead.bind("typeahead:cursorchanged", @updateMap)
 
   # Inits google map to display selected address from autocomplete
-  initMap: (options)->
-    options = $.extend
+  initMap: ->
+    mapOptions = $.extend
       zoom: 3
       center: new google.maps.LatLng(0, 0)
       mapTypeId: google.maps.MapTypeId.ROADMAP
-      displayMarker: false
-    , options
-    @map = new google.maps.Map($(options.id)[0], options)
+    , @options.map
+    @map = new google.maps.Map($(mapOptions.id)[0], mapOptions)
     @lastResult = null
 
     # Create a hidden marker to display selected address
-    @marker = new google.maps.Marker(position: options.center, map: @map, visible: options.displayMarker, draggable: @options.draggable)
+    markerOptions = $.extend
+      draggable: true
+      visible: false
+      position: mapOptions.center
+      map: @map
+    , @options.marker || {}
+    @marker = new google.maps.Marker(markerOptions)
     if @options.draggable
       google.maps.event.addListener(@marker, 'dragend', @markerDragged)
 
