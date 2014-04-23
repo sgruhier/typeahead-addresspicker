@@ -79,7 +79,7 @@ Available Options:
 
 * ```map``` (Hash): Map id and options to link typeahead to a goggle map (default: none).
 
-    * ```id``` (String/Element)
+    * ```id``` (String/Element) DOM map element or CSS selector
     * all [google.maps.Map](https://developers.google.com/maps/documentation/javascript/reference?csw=1#MapOptions) constructor options. Default values are:
     ```js 
     {
@@ -103,7 +103,15 @@ Available Options:
 * ```autocompleteService``` (Hash) : options passed to google.maps.places.AutocompleteService#getPlacePredictions (default: ```{types: ["geocode"]}```)
 For more details read Google [documentation](https://developers.google.com/maps/documentation/javascript/reference#AutocompletionRequest). You can add a lot of options, like get only address for a country, or get only cities.
 
-Example To get only cities in United States: ```autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}```
+    Example To get only cities in United States: 
+    ```js 
+    {
+      autocompleteService: {
+        types: ['(cities)'], 
+        componentRestrictions: {country: 'US'}
+      }
+    }```
+
 * ```zoomForLocation``` (Numner): Zoom value when an accurate address is selected (default: 16).
 * ```reverseGeocoding``` (Boolean): Reverse geocoding when marker is dragged on map (default: true).
 
