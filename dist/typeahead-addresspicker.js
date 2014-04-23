@@ -125,7 +125,7 @@
         map: this.map
       }, this.options.marker || {});
       this.marker = new google.maps.Marker(markerOptions);
-      if (this.options.draggable) {
+      if (markerOptions.draggable) {
         return google.maps.event.addListener(this.marker, 'dragend', this.markerDragged);
       }
     };

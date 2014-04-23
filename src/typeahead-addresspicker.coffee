@@ -77,7 +77,7 @@ class @AddressPicker extends Bloodhound
       map: @map
     , @options.marker || {}
     @marker = new google.maps.Marker(markerOptions)
-    if @options.draggable
+    if markerOptions.draggable
       google.maps.event.addListener(@marker, 'dragend', @markerDragged)
 
   # Overrides Bloodhound#get  to send request to google maps autocomplete service
