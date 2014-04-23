@@ -91,10 +91,9 @@
     });
     describe('AddressPickerResult', function() {
       beforeEach(function() {
-        var fixture;
-        fixture = getJSONFixture('paris-place-result.json');
-        fixture.geometry.location = new google.maps.LatLng(fixture.geometry.location.k, fixture.geometry.location.A);
-        return this.addressPickerResult = new AddressPickerResult(fixture);
+        this.fixture = getJSONFixture('paris-place-result.json');
+        this.fixture.geometry.location = new google.maps.LatLng(this.fixture.geometry.location.k, this.fixture.geometry.location.A);
+        return this.addressPickerResult = new AddressPickerResult(this.fixture);
       });
       it('should instance a new AddressPickerResult object', function() {
         return expect(this.addressPickerResult instanceof AddressPickerResult).toBe(true);
@@ -110,6 +109,13 @@
       });
       it('should get longitude value', function() {
         return expect(this.addressPickerResult.lng()).toEqual(2.3522219000000177);
+      });
+      it('should not be from reverse geocoding by default', function() {
+        return expect(this.addressPickerResult.isReverseGeocoding()).toBe(false);
+      });
+      it('should be from reverse geocoding is set on constructor', function() {
+        this.addressPickerResult = new AddressPickerResult(this.fixture, true);
+        return expect(this.addressPickerResult.isReverseGeocoding()).toBe(true);
       });
       it('should get name for type if available', function() {
         expect(this.addressPickerResult.nameForType("country")).toEqual('France');
@@ -136,7 +142,7 @@
         addressPickerResult = new AddressPickerResult(fixture);
         return expect(addressPickerResult.isAccurate()).toBe(true);
       });
-      return it('should chnage lat/lng', function() {
+      return it('should change lat/lng', function() {
         this.addressPickerResult.setLatLng(12, 13);
         expect(this.addressPickerResult.lat()).toEqual(12);
         return expect(this.addressPickerResult.lng()).toEqual(13);

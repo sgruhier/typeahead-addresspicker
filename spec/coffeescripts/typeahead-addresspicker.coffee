@@ -75,9 +75,9 @@ describe 'TypyaheadAddressPicker', ->
 
   describe 'AddressPickerResult', ->
     beforeEach ->
-      fixture = getJSONFixture('paris-place-result.json')
-      fixture.geometry.location = new google.maps.LatLng(fixture.geometry.location.k, fixture.geometry.location.A)
-      @addressPickerResult = new AddressPickerResult(fixture)
+      @fixture = getJSONFixture('paris-place-result.json')
+      @fixture.geometry.location = new google.maps.LatLng(@fixture.geometry.location.k, @fixture.geometry.location.A)
+      @addressPickerResult = new AddressPickerResult(@fixture)
 
     it 'should instance a new AddressPickerResult object', ->
       expect(@addressPickerResult instanceof AddressPickerResult).toBe(true)
@@ -93,6 +93,13 @@ describe 'TypyaheadAddressPicker', ->
 
     it 'should get longitude value', ->
       expect(@addressPickerResult.lng()).toEqual(2.3522219000000177)
+
+    it 'should not be from reverse geocoding by default', ->
+      expect(@addressPickerResult.isReverseGeocoding()).toBe(false)
+
+    it 'should be from reverse geocoding is set on constructor', ->
+      @addressPickerResult = new AddressPickerResult(@fixture, true)
+      expect(@addressPickerResult.isReverseGeocoding()).toBe(true)
 
     it 'should get name for type if available', ->
       expect(@addressPickerResult.nameForType("country")).toEqual('France')
@@ -118,7 +125,7 @@ describe 'TypyaheadAddressPicker', ->
       addressPickerResult = new AddressPickerResult(fixture)
       expect(addressPickerResult.isAccurate()).toBe(true)
 
-    it 'should chnage lat/lng', ->
+    it 'should change lat/lng', ->
       @addressPickerResult.setLatLng(12, 13)
       expect(@addressPickerResult.lat()).toEqual(12)
       expect(@addressPickerResult.lng()).toEqual(13)

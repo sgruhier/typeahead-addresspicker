@@ -1,3 +1,41 @@
+class @AddressPickerResult
+  constructor: (@placeResult, @fromReverseGeocoding = false) ->
+    @latitude = @placeResult.geometry.location.lat()
+    @longitude = @placeResult.geometry.location.lng()
+
+  addressTypes: ->
+    types = []
+    for component in @addressComponents()
+      for type in component.types
+        types.push(type) if types.indexOf(type) == -1
+    types
+
+  addressComponents: ->
+    @placeResult.address_components || []
+
+  address: ->
+    @placeResult.formatted_address
+
+  nameForType: (type, shortName = false) ->
+    for component in @addressComponents()
+      return (if shortName then component.short_name else component.long_name) if component.types.indexOf(type) != -1
+    null
+
+  lat: ->
+    @latitude
+
+  lng: ->
+    @longitude
+
+  setLatLng: (@latitude, @longitude) ->
+
+
+  isAccurate: ->
+    ! @placeResult.geometry.viewport
+
+  isReverseGeocoding: ->
+    @fromReverseGeocoding
+
 class @AddressPicker extends Bloodhound
   constructor: (options = {})->
     @options = $.extend
@@ -75,45 +113,10 @@ class @AddressPicker extends Bloodhound
     @geocoder ?= new google.maps.Geocoder()
     @geocoder.geocode location: position, (results) =>
       if results && results.length > 0
-        @lastResult = new AddressPickerResult(results[0])
+        @lastResult = new AddressPickerResult(results[0], true)
         $(this).trigger('addresspicker:selected', @lastResult)
 
   # Attr accessor
   getGMap: -> @map
   getGMarker: -> @marker
-
-class @AddressPickerResult
-  constructor: (@placeResult) ->
-    @latitude = @placeResult.geometry.location.lat()
-    @longitude = @placeResult.geometry.location.lng()
-
-  addressTypes: ->
-    types = []
-    for component in @addressComponents()
-      for type in component.types
-        types.push(type) if types.indexOf(type) == -1
-    types
-
-  addressComponents: ->
-    @placeResult.address_components || []
-
-  address: ->
-    @placeResult.formatted_address
-
-  nameForType: (type, shortName = false) ->
-    for component in @addressComponents()
-      return (if shortName then component.short_name else component.long_name) if component.types.indexOf(type) != -1
-    null
-
-  lat: ->
-    @latitude
-
-  lng: ->
-    @longitude
-
-  setLatLng: (@latitude, @longitude) ->
-
-
-  isAccurate: ->
-    ! @placeResult.geometry.viewport
 
