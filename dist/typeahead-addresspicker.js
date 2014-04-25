@@ -84,6 +84,7 @@
         options = {};
       }
       this.markerDragged = __bind(this.markerDragged, this);
+      this.updateBoundsForPlace = __bind(this.updateBoundsForPlace, this);
       this.updateMap = __bind(this.updateMap, this);
       this.options = $.extend({
         local: [],
@@ -110,18 +111,23 @@
     };
 
     AddressPicker.prototype.initMap = function() {
-      var mapOptions, markerOptions;
-      mapOptions = $.extend({
-        zoom: 3,
-        center: new google.maps.LatLng(0, 0),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      }, this.options.map);
-      this.map = new google.maps.Map($(mapOptions.id)[0], mapOptions);
+      var markerOptions, _ref, _ref1;
+      if ((_ref = this.options) != null ? (_ref1 = _ref.map) != null ? _ref1.gmap : void 0 : void 0) {
+        this.map = this.options.map.gmap;
+      } else {
+        this.mapOptions = $.extend({
+          zoom: 3,
+          center: new google.maps.LatLng(0, 0),
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          boundsForLocation: this.updateBoundsForPlace
+        }, this.options.map);
+        this.map = new google.maps.Map($(this.mapOptions.id)[0], this.mapOptions);
+      }
       this.lastResult = null;
       markerOptions = $.extend({
         draggable: true,
         visible: false,
-        position: mapOptions.center,
+        position: this.map.getCenter(),
         map: this.map
       }, this.options.marker || {});
       this.marker = new google.maps.Marker(markerOptions);
@@ -152,22 +158,29 @@
     AddressPicker.prototype.updateMap = function(event, place) {
       return this.placeService.getDetails(place, (function(_this) {
         return function(response) {
+          var _ref;
           _this.lastResult = new AddressPickerResult(response);
-          $(_this).trigger('addresspicker:selected', _this.lastResult);
           if (_this.marker) {
             _this.marker.setPosition(response.geometry.location);
             _this.marker.setVisible(true);
           }
           if (_this.map) {
-            if (response.geometry.viewport) {
-              return _this.map.fitBounds(response.geometry.viewport);
-            } else {
-              _this.map.setCenter(response.geometry.location);
-              return _this.map.setZoom(_this.options.zoomForLocation);
+            if ((_ref = _this.mapOptions) != null) {
+              _ref.boundsForLocation(response);
             }
           }
+          return $(_this).trigger('addresspicker:selected', _this.lastResult);
         };
       })(this));
+    };
+
+    AddressPicker.prototype.updateBoundsForPlace = function(response) {
+      if (response.geometry.viewport) {
+        return this.map.fitBounds(response.geometry.viewport);
+      } else {
+        this.map.setCenter(response.geometry.location);
+        return this.map.setZoom(this.options.zoomForLocation);
+      }
     };
 
     AddressPicker.prototype.markerDragged = function() {

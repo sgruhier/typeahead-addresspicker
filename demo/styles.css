@@ -40,7 +40,13 @@ html {
   line-height: 1.2;
   color: #333;
 }
-
+label img {
+  vertical-align: middle;
+}
+label {
+  margin: 5px 0 ;
+  display: block;
+}
 .title,
 .example-name {
   font-family: Prociono;

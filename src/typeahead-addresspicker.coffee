@@ -61,19 +61,23 @@ class @AddressPicker extends Bloodhound
 
   # Inits google map to display selected address from autocomplete
   initMap: ->
-    mapOptions = $.extend
-      zoom: 3
-      center: new google.maps.LatLng(0, 0)
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    , @options.map
-    @map = new google.maps.Map($(mapOptions.id)[0], mapOptions)
+    if @options?.map?.gmap
+      @map = @options.map.gmap
+    else
+      @mapOptions = $.extend
+        zoom: 3
+        center: new google.maps.LatLng(0, 0)
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+        boundsForLocation: @updateBoundsForPlace
+      , @options.map
+      @map = new google.maps.Map($(@mapOptions.id)[0], @mapOptions)
     @lastResult = null
 
     # Create a hidden marker to display selected address
     markerOptions = $.extend
       draggable: true
       visible: false
-      position: mapOptions.center
+      position: @map.getCenter()
       map: @map
     , @options.marker || {}
     @marker = new google.maps.Marker(markerOptions)
@@ -94,16 +98,19 @@ class @AddressPicker extends Bloodhound
     # Send place reference to place service to get geographic information
     @placeService.getDetails place, (response) =>
       @lastResult = new AddressPickerResult(response)
-      $(this).trigger('addresspicker:selected', @lastResult)
       if @marker
         @marker.setPosition(response.geometry.location)
         @marker.setVisible(true)
       if @map
-        if response.geometry.viewport
-          @map.fitBounds(response.geometry.viewport)
-        else
-          @map.setCenter(response.geometry.location)
-          @map.setZoom(@options.zoomForLocation)
+        @mapOptions?.boundsForLocation(response)
+      $(this).trigger('addresspicker:selected', @lastResult)
+
+  updateBoundsForPlace: (response) =>
+    if response.geometry.viewport
+      @map.fitBounds(response.geometry.viewport)
+    else
+      @map.setCenter(response.geometry.location)
+      @map.setZoom(@options.zoomForLocation)
 
   markerDragged: () =>
     if @options.reverseGeocoding

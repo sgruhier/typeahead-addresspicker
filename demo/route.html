@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>typeahead-addresspicker.js</title>
+  <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="main">
+      <h1> Typeahead address picker</h1>
+      <p>
+        Demo to show how to use 2 address picker input fields with one map. The map displays the 2 markers.
+        Very usefull to build a form with a departure and a destination and to compute a route for example.
+        <br>
+        <br>
+        This example display the route between from and to location but it's up to you to do whatever you want when user changes from or to address.
+      </p>
+
+      <div class="address-panel">
+        <label><img src="http://maps.google.com/mapfiles/ms/icons/red-dot.png"/>From</label>
+        <input id="addressFrom" class="typeahead" type="text" placeholder="Departure" value="Paris, France">
+        <br>
+        <br>
+        <label><img src="http://maps.google.com/mapfiles/ms/icons/green-dot.png"/>To</label>
+        <input id="addressTo" class="typeahead" type="text" placeholder="Destination" value="Rome, Italy">
+      </div>
+      <div id="map"></div>
+    </div>
+  </div>
+
+ <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+ <script src="../dist/typeahead.js"></script>
+ <script src="../dist/typeahead-addresspicker.js"></script>
+ <script>
+
+  $( function() {
+    // Compute route service
+    var directionsDisplay = new google.maps.DirectionsRenderer({draggable: false, markerOptions: {visible: false}});
+    var directionsService = new google.maps.DirectionsService();
+
+    function calcRoute() {
+      console.log("calcRoute", addressPickerFrom.getGMarker().getPosition(), addressPickerTo.getGMarker().getPosition())
+      var request = {
+        origin: addressPickerFrom.getGMarker().getPosition(),
+        destination: addressPickerTo.getGMarker().getPosition(),
+        travelMode: google.maps.TravelMode.DRIVING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+    }
+
+    // Update map bounds to display the whole route
+    function updateBoundsForPlace(response) {
+      var bounds = new google.map.LatLngBounds(addressPickerFrom.getGMarker().getPosition(), addressPickerTo.getGMarker().getPosition());
+      addressPickerFrom.getGMap().fitBounds(bounds)
+    }
+
+    // instantiate the addressPicker suggestion engine (based on bloodhound)
+    // Set marker position on Paris, France
+    var addressPickerFrom = new AddressPicker({
+      map: {id: '#map', center: new google.maps.LatLng(46.52016265127143,5.999682937499964), zoom: 5},
+      marker: {draggable: true, visible: true, position: new google.maps.LatLng(48.856614,2.352222), icon:"http://maps.google.com/mapfiles/ms/icons/red-dot.png"},
+      zoomForLocation: 18,
+      reverseGeocoding: true
+    });
+
+    // Instantiate the typeahead UI
+    $('#addressFrom').typeahead(null, {
+      displayKey: 'description',
+      source: addressPickerFrom.ttAdapter()
+    });
+    addressPickerFrom.bindDefaultTypeaheadEvent($('#addressFrom'))
+    $(addressPickerFrom).on('addresspicker:selected', function (event, result) {
+      calcRoute()
+      if (result.isReverseGeocoding()) {
+        $('#addressFrom').val(result.address())
+      }
+    });
+
+    // Creates a 2nd addressPicker but use the same map of the previous addressPicker
+    var addressPickerTo = new AddressPicker({
+      map: {gmap: addressPickerFrom.getGMap()},
+      marker: {draggable: true, visible: true, position: new google.maps.LatLng(41.8723889, 12.48018019999995), icon:"http://maps.google.com/mapfiles/ms/icons/green-dot.png"},
+      zoomForLocation: 18,
+      reverseGeocoding: true
+    });
+    $('#addressTo').typeahead(null, {
+      displayKey: 'description',
+      source: addressPickerTo.ttAdapter()
+    });
+    addressPickerTo.bindDefaultTypeaheadEvent($('#addressTo'))
+    $(addressPickerTo).on('addresspicker:selected', function (event, result) {
+      calcRoute()
+      if (result.isReverseGeocoding()) {
+        $('#addressTo').val(result.address())
+      }
+    });
+    directionsDisplay.setMap(addressPickerFrom.getGMap());
+    calcRoute()
+
+  })
+
+
+  </script>
+
+</body>
+</html>
