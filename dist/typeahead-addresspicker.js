@@ -140,19 +140,12 @@
         var service;
         service = new google.maps.places.AutocompleteService();
         this.options.autocompleteService.input = query;
-        return service.getPlacePredictions(this.options.autocompleteService, function(predictions) {
-          var data, suggestion;
-          data = (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = predictions.length; _i < _len; _i++) {
-              suggestion = predictions[_i];
-              _results.push(suggestion);
-            }
-            return _results;
-          })();
-          return cb(data);
-        });
+        return service.getPlacePredictions(this.options.autocompleteService, (function(_this) {
+          return function(predictions) {
+            $(_this).trigger('addresspicker:predictions', [predictions]);
+            return cb(predictions);
+          };
+        })(this));
       };
 
       AddressPicker.prototype.updateMap = function(event, place) {

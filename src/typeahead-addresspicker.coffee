@@ -89,9 +89,9 @@
     get: (query, cb) ->
       service = new google.maps.places.AutocompleteService()
       @options.autocompleteService.input = query
-      service.getPlacePredictions @options.autocompleteService, (predictions) ->
-        data = (suggestion for suggestion in predictions)
-        cb(data)
+      service.getPlacePredictions @options.autocompleteService, (predictions) =>
+        $(this).trigger('addresspicker:predictions', [predictions])
+        cb(predictions)
 
     # Callback for typeahead events like typeahead:selected or typeahead:cursorchanged
     # to update marker position and map center/zoom for a specific Google Map place

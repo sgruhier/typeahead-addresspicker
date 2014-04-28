@@ -73,6 +73,12 @@
     });
     addressPicker.bindDefaultTypeaheadEvent($('#address1'))
     $(addressPicker).on('addresspicker:selected', function (event, result) { displayResults(result, $('#response1'))})
+    $(addressPicker).on('addresspicker:predictions', function(event, result) {
+      if (result && result.length > 0)
+        $('#address1').removeClass("empty")
+      else
+        $('#address1').addClass("empty")
+    })
   })
 
   $( function() {
