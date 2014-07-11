@@ -114,7 +114,7 @@ For more details read Google [documentation](https://developers.google.com/maps/
     ```
 
 * ```zoomForLocation``` (Numner): Zoom value when an accurate address is selected (default: 16).
-* ```reverseGeocoding``` (Boolean): Reverse geocoding when marker is dragged on map (default: true).
+* ```reverseGeocoding``` (Boolean): Reverse geocoding when marker is dragged on map (default: false).
 
 # Events
 
