@@ -76,7 +76,7 @@ describe 'TypyaheadAddressPicker', ->
   describe 'AddressPickerResult', ->
     beforeEach ->
       @fixture = getJSONFixture('paris-place-result.json')
-      @fixture.geometry.location = new google.maps.LatLng(@fixture.geometry.location.k, @fixture.geometry.location.A)
+      @fixture.geometry.location = new google.maps.LatLng(@fixture.geometry.location_text.k, @fixture.geometry.location_text.A)
       @addressPickerResult = new AddressPickerResult(@fixture)
 
     it 'should instance a new AddressPickerResult object', ->

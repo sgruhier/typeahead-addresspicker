@@ -36,7 +36,7 @@
   "adr_address": "Paris, France",
   "formatted_address": "Paris, France",
   "geometry": {
-    "location": {
+    "location_text": {
       "k": 48.856614,
       "A": 2.3522219000000177
     },
