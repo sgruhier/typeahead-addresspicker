@@ -91,12 +91,8 @@
     });
     describe('AddressPickerResult', function() {
       beforeEach(function() {
-        console.log(this.fixture);
         this.fixture = getJSONFixture('paris-place-result.json');
-        console.log(this.fixture.geometry.location_text.k);
-        console.log(this.fixture.geometry.location_text.A);
         this.fixture.geometry.location = new google.maps.LatLng(this.fixture.geometry.location_text.k, this.fixture.geometry.location_text.A);
-        console.log(typeof this.fixture.geometry.location);
         return this.addressPickerResult = new AddressPickerResult(this.fixture);
       });
       it('should instance a new AddressPickerResult object', function() {
