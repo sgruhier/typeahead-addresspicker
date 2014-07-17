@@ -132,6 +132,10 @@ Listen that event to get values you need and store them in your form.
 Here is an example:
 
 ```js
+// Proxy inputs typeahead events to addressPicker
+addressPicker.bindDefaultTypeaheadEvent($('#address'))
+
+// Listen for selected places result
 $(addressPicker).on('addresspicker:selected', function (event, result) {
   $('#your_lat_input').val(result.lat());
   $('#your_lng_input').val(result.lng());
@@ -139,6 +143,7 @@ $(addressPicker).on('addresspicker:selected', function (event, result) {
 });
 
 ``` 
+
 # Tests
 
 The code is tested as much as possible. If you want to add features, please add spec in your pull request.
