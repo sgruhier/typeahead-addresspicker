@@ -1,0 +1,24 @@
+{
+  "name": "typeahead-addresspicker",
+  "version": "0.1.0",
+  "homepage": "https://github.com/sgruhier/typeahead-addresspicker",
+  "authors": [
+    "Sébastien Gruhier <sebastien.gruhier@xilinus.com>"
+  ],
+  "description": "Address picker using google map API to twitter typeahead.js autocomplete",
+  "keywords": [
+    "autocomplete",
+    "typeahead",
+    "addresspicker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "spec"
+  ],
+  "dependencies": {
+    "typeahead.js": "~0.10.4"
+  }
+}
