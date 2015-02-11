@@ -150,7 +150,7 @@
       };
 
       AddressPicker.prototype.updateMap = function(event, place) {
-        if (this.placeDetails) {
+        if (this.options.placeDetails) {
           return this.placeService.getDetails(place, (function(_this) {
             return function(response) {
               var _ref;
