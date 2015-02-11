@@ -46,6 +46,7 @@
         autocompleteService: {types: ["geocode"]}
         zoomForLocation: 16
         reverseGeocoding: false
+        placeDetails: true
       , options
       super(@options)
 
@@ -97,14 +98,17 @@
     # to update marker position and map center/zoom for a specific Google Map place
     updateMap: (event, place) =>
       # Send place reference to place service to get geographic information
-      @placeService.getDetails place, (response) =>
-        @lastResult = new AddressPickerResult(response)
-        if @marker
-          @marker.setPosition(response.geometry.location)
-          @marker.setVisible(true)
-        if @map
-          @mapOptions?.boundsForLocation(response)
-        $(this).trigger('addresspicker:selected', @lastResult)
+      if @placeDetails
+        @placeService.getDetails place, (response) =>
+          @lastResult = new AddressPickerResult(response)
+          if @marker
+            @marker.setPosition(response.geometry.location)
+            @marker.setVisible(true)
+          if @map
+            @mapOptions?.boundsForLocation(response)
+          $(this).trigger('addresspicker:selected', @lastResult)
+      else
+        $(this).trigger('addresspicker:selected', place)
 
     updateBoundsForPlace: (response) =>
       if response.geometry.viewport
