@@ -98,7 +98,7 @@
     # to update marker position and map center/zoom for a specific Google Map place
     updateMap: (event, place) =>
       # Send place reference to place service to get geographic information
-      if @placeDetails
+      if @options.placeDetails
         @placeService.getDetails place, (response) =>
           @lastResult = new AddressPickerResult(response)
           if @marker
