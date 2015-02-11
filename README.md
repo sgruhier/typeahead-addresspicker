@@ -118,6 +118,7 @@ For more details read Google [documentation](https://developers.google.com/maps/
 
 * `zoomForLocation` (Number): Zoom value when an accurate address is selected (default: 16).
 * `reverseGeocoding` (Boolean): Reverse geocoding when marker is dragged on map (default: false).
+* `placeDetails` (Boolean): If not using with a map, you can skip the `getDetails` portion to speed up the query (default: false).
 
 # Events
 
