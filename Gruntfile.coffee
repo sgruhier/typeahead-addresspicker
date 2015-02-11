@@ -65,7 +65,8 @@ module.exports = (grunt) ->
     jasmine :
       src : [
         'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
-        'dist/typeahead.js'
+        'bower_components/typeahead.js/dist/bloodhound.js'
+        'bower_components/typeahead.js/dist/typeahead.jquery.js'
         'dist/typeahead-addresspicker.js'
         'spec/javascripts/libs/*.js'
       ]
