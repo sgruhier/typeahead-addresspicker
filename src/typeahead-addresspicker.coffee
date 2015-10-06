@@ -56,9 +56,10 @@
       # Create a PlacesService on a fake DOM element
       @placeService = new google.maps.places.PlacesService(document.createElement('div'))
 
-    # Binds typeahead:selected and typeahead:cursorchanged event to @updateMap
+    # Binds typeahead trigger events to @updateMap
     bindDefaultTypeaheadEvent: (typeahead) ->
       typeahead.bind("typeahead:selected", @updateMap)
+      typeahead.bind("typeahead:autocompleted", @updateMap)
       typeahead.bind("typeahead:cursorchanged", @updateMap)
 
     # Inits google map to display selected address from autocomplete

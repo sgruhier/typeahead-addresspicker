@@ -70,8 +70,9 @@ describe 'TypyaheadAddressPicker', ->
       @addressPicker.bindDefaultTypeaheadEvent($('#typeahead'))
 
       $('#typeahead').trigger('typeahead:selected')
+      $('#typeahead').trigger('typeahead:autocompleted')
       $('#typeahead').trigger('typeahead:cursorchanged')
-      expect(@addressPicker.updateMap.calls.count()).toEqual(2)
+      expect(@addressPicker.updateMap.calls.count()).toEqual(3)
 
   describe 'AddressPickerResult', ->
     beforeEach ->
@@ -142,4 +143,3 @@ describe 'TypyaheadAddressPicker', ->
 
     it 'should not have addressComponents', ->
       expect(@addressPickerResult.addressComponents().length).toEqual(0)
-
