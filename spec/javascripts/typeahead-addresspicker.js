@@ -85,8 +85,9 @@
         spyOn(this.addressPicker, 'updateMap');
         this.addressPicker.bindDefaultTypeaheadEvent($('#typeahead'));
         $('#typeahead').trigger('typeahead:selected');
+        $('#typeahead').trigger('typeahead:autocompleted');
         $('#typeahead').trigger('typeahead:cursorchanged');
-        return expect(this.addressPicker.updateMap.calls.count()).toEqual(2);
+        return expect(this.addressPicker.updateMap.calls.count()).toEqual(3);
       });
     });
     describe('AddressPickerResult', function() {

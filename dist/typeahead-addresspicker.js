@@ -1,7 +1,7 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
   (function($) {
     this.AddressPickerResult = (function() {
@@ -13,14 +13,14 @@
       }
 
       AddressPickerResult.prototype.addressTypes = function() {
-        var component, type, types, _i, _j, _len, _len1, _ref, _ref1;
+        var component, i, j, len, len1, ref, ref1, type, types;
         types = [];
-        _ref = this.addressComponents();
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          component = _ref[_i];
-          _ref1 = component.types;
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            type = _ref1[_j];
+        ref = this.addressComponents();
+        for (i = 0, len = ref.length; i < len; i++) {
+          component = ref[i];
+          ref1 = component.types;
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            type = ref1[j];
             if (types.indexOf(type) === -1) {
               types.push(type);
             }
@@ -38,13 +38,13 @@
       };
 
       AddressPickerResult.prototype.nameForType = function(type, shortName) {
-        var component, _i, _len, _ref;
+        var component, i, len, ref;
         if (shortName == null) {
           shortName = false;
         }
-        _ref = this.addressComponents();
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          component = _ref[_i];
+        ref = this.addressComponents();
+        for (i = 0, len = ref.length; i < len; i++) {
+          component = ref[i];
           if (component.types.indexOf(type) !== -1) {
             return (shortName ? component.short_name : component.long_name);
           }
@@ -76,16 +76,16 @@
       return AddressPickerResult;
 
     })();
-    return this.AddressPicker = (function(_super) {
-      __extends(AddressPicker, _super);
+    return this.AddressPicker = (function(superClass) {
+      extend(AddressPicker, superClass);
 
       function AddressPicker(options) {
         if (options == null) {
           options = {};
         }
-        this.markerDragged = __bind(this.markerDragged, this);
-        this.updateBoundsForPlace = __bind(this.updateBoundsForPlace, this);
-        this.updateMap = __bind(this.updateMap, this);
+        this.markerDragged = bind(this.markerDragged, this);
+        this.updateBoundsForPlace = bind(this.updateBoundsForPlace, this);
+        this.updateMap = bind(this.updateMap, this);
         this.options = $.extend({
           local: [],
           datumTokenizer: function(d) {
@@ -97,7 +97,8 @@
           },
           zoomForLocation: 16,
           reverseGeocoding: false,
-          placeDetails: true
+          placeDetails: true,
+          remote: 'fakeRemote'
         }, options);
         AddressPicker.__super__.constructor.call(this, this.options);
         if (this.options.map) {
@@ -108,12 +109,13 @@
 
       AddressPicker.prototype.bindDefaultTypeaheadEvent = function(typeahead) {
         typeahead.bind("typeahead:selected", this.updateMap);
+        typeahead.bind("typeahead:autocompleted", this.updateMap);
         return typeahead.bind("typeahead:cursorchanged", this.updateMap);
       };
 
       AddressPicker.prototype.initMap = function() {
-        var markerOptions, _ref, _ref1;
-        if ((_ref = this.options) != null ? (_ref1 = _ref.map) != null ? _ref1.gmap : void 0 : void 0) {
+        var markerOptions, ref, ref1;
+        if ((ref = this.options) != null ? (ref1 = ref.map) != null ? ref1.gmap : void 0 : void 0) {
           this.map = this.options.map.gmap;
         } else {
           this.mapOptions = $.extend({
@@ -137,14 +139,14 @@
         }
       };
 
-      AddressPicker.prototype.get = function(query, cb) {
+      AddressPicker.prototype.search = function(query, sync, async) {
         var service;
         service = new google.maps.places.AutocompleteService();
         this.options.autocompleteService.input = query;
         return service.getPlacePredictions(this.options.autocompleteService, (function(_this) {
           return function(predictions) {
             $(_this).trigger('addresspicker:predictions', [predictions]);
-            return cb(predictions);
+            return async(predictions);
           };
         })(this));
       };
@@ -153,15 +155,15 @@
         if (this.options.placeDetails) {
           return this.placeService.getDetails(place, (function(_this) {
             return function(response) {
-              var _ref;
+              var ref;
               _this.lastResult = new AddressPickerResult(response);
               if (_this.marker) {
                 _this.marker.setPosition(response.geometry.location);
                 _this.marker.setVisible(true);
               }
               if (_this.map) {
-                if ((_ref = _this.mapOptions) != null) {
-                  _ref.boundsForLocation(response);
+                if ((ref = _this.mapOptions) != null) {
+                  ref.boundsForLocation(response);
                 }
               }
               return $(_this).trigger('addresspicker:selected', _this.lastResult);

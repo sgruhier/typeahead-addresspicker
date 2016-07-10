@@ -70,7 +70,8 @@
     var addressPicker = new AddressPicker();
     $('#address1').typeahead(null, {
       displayKey: 'description',
-      source: addressPicker.ttAdapter()
+      limit: 20,
+      source: addressPicker
     });
     addressPicker.bindDefaultTypeaheadEvent($('#address1'))
     $(addressPicker).on('addresspicker:selected', function (event, result) { displayResults(result, $('#response1'))})
@@ -89,7 +90,8 @@
     // instantiate the typeahead UI
     $('#address2').typeahead(null, {
       displayKey: 'description',
-      source: addressPicker.ttAdapter()
+      limit: 20,
+      source: addressPicker
     });
     addressPicker.bindDefaultTypeaheadEvent($('#address2'))
     $(addressPicker).on('addresspicker:selected', function (event, result) {

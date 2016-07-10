@@ -47,6 +47,7 @@
         zoomForLocation: 16
         reverseGeocoding: false
         placeDetails: true
+        remote: 'fakeRemote'
       , options
       super(@options)
 
@@ -88,12 +89,12 @@
         google.maps.event.addListener(@marker, 'dragend', @markerDragged)
 
     # Overrides Bloodhound#get  to send request to google maps autocomplete service
-    get: (query, cb) ->
+    search: (query, sync, async) ->
       service = new google.maps.places.AutocompleteService()
       @options.autocompleteService.input = query
       service.getPlacePredictions @options.autocompleteService, (predictions) =>
         $(this).trigger('addresspicker:predictions', [predictions])
-        cb(predictions)
+        async(predictions)
 
     # Callback for typeahead events like typeahead:selected or typeahead:cursorchanged
     # to update marker position and map center/zoom for a specific Google Map place
